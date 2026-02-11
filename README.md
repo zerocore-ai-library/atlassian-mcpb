@@ -2,6 +2,57 @@
 
 An MCP server for Atlassian Jira and Confluence, connecting to the Rovo Remote MCP Server via HTTP transport with OAuth 2.1 authentication.
 
+## Setup
+
+### Using tool CLI
+
+Install the CLI from https://github.com/zerocore-ai/tool-cli
+
+```bash
+# Install from tool.store
+tool install library/atlassian
+```
+
+```bash
+# View available tools
+tool info library/atlassian
+```
+
+```bash
+# Get accessible resources (to find your cloudId)
+tool call library/atlassian -m getAccessibleAtlassianResources
+```
+
+```bash
+# Search Jira and Confluence
+tool call library/atlassian -m search -p query="open bugs in Project Alpha"
+```
+
+```bash
+# Search with JQL
+tool call library/atlassian -m searchJiraIssuesUsingJql -p cloudId="YOUR_CLOUD_ID" -p jql="project = ALPHA AND status != Done"
+```
+
+```bash
+# Search Confluence with CQL
+tool call library/atlassian -m searchConfluenceUsingCql -p cloudId="YOUR_CLOUD_ID" -p cql="type = page AND title ~ \"Q2 planning\""
+```
+
+### Prerequisites
+
+- Atlassian Cloud site with Jira and/or Confluence
+- Modern browser for OAuth 2.1 consent flow
+
+### Authentication
+
+This server uses OAuth 2.1 browser-based authentication. On first connect, Atlassian triggers a secure OAuth consent flow. The first successful consent "installs" the MCP app for that site.
+
+**Common Issues:**
+
+- **"Your site admin must authorize this app"**: A site admin needs to complete the OAuth consent first
+- **"Your organization admin must authorize access..."**: An org admin must allow the domain in Rovo MCP settings
+- **"You don't have permission to connect from this IP address"**: IP allowlisting may be blocking access
+
 ## Tools
 
 ### `search`
@@ -328,57 +379,6 @@ Get Jira issue or Confluence page by ARI.
 |-------|------|----------|-------------|
 | `id` | string | Yes | ARI (e.g., `ari:cloud:...:issue/123`) or other ID |
 | `cloudId` | string | No | Cloud ID (required for non-ARI IDs) |
-
-## Setup
-
-### Using tool CLI
-
-Install the CLI from https://github.com/zerocore-ai/tool-cli
-
-```bash
-# Install from tool.store
-tool install library/atlassian
-```
-
-```bash
-# View available tools
-tool info library/atlassian
-```
-
-```bash
-# Get accessible resources (to find your cloudId)
-tool call library/atlassian -m getAccessibleAtlassianResources
-```
-
-```bash
-# Search Jira and Confluence
-tool call library/atlassian -m search -p query="open bugs in Project Alpha"
-```
-
-```bash
-# Search with JQL
-tool call library/atlassian -m searchJiraIssuesUsingJql -p cloudId="YOUR_CLOUD_ID" -p jql="project = ALPHA AND status != Done"
-```
-
-```bash
-# Search Confluence with CQL
-tool call library/atlassian -m searchConfluenceUsingCql -p cloudId="YOUR_CLOUD_ID" -p cql="type = page AND title ~ \"Q2 planning\""
-```
-
-### Prerequisites
-
-- Atlassian Cloud site with Jira and/or Confluence
-- Modern browser for OAuth 2.1 consent flow
-
-### Authentication
-
-This server uses OAuth 2.1 browser-based authentication. On first connect, Atlassian triggers a secure OAuth consent flow. The first successful consent "installs" the MCP app for that site.
-
-**Common Issues:**
-
-- **"Your site admin must authorize this app"**: A site admin needs to complete the OAuth consent first
-- **"Your organization admin must authorize access..."**: An org admin must allow the domain in Rovo MCP settings
-- **"You don't have permission to connect from this IP address"**: IP allowlisting may be blocking access
 
 ## License
 
